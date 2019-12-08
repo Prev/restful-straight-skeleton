@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Straight Skeleton Test</title>
+	<meta charset="utf-8">
+
+	<style>
+		.container {
+			width: 800px;
+			margin: 30px auto;
+		}
+
+		code pre {
+			background-color: #eee;
+			padding: 10px;
+			tab-size: 4;
+		}
+
+		textarea {
+			width: 100%;
+			height: 300px;
+			font-size: 16px;
+			tab-size: 4;
+		}
+
+		textarea#output-json {
+			font-size: 14px;
+		}
+	</style>
+
+	<script type="text/javascript">
+		async function callAPI() {
+			var data = document.getElementById('textarea').value;
+
+			try {
+				data = JSON.parse(data);
+			} catch {
+				alert('Error on parsing json');
+			}
+
+			var body = {
+				'points': data,
+			};
+
+			var res = await fetch('/api', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(body),
+			});
+			var data = await res.json();
+
+			document.getElementById('output-json').innerHTML = JSON.stringify(data, null, "\t");
+		}
+	</script>
+</head>
+<body>
+	<div class="container">
+		<h2>Restful Straight Skeleton</h2>
+
+		<h4>Usage: </h4>
+		<code>
+			<pre>
+var body = {
+	'points': [[-1,-1], [0,-12], [1,-1], [12,0], [1,1], [0,12], [-1,1], [-12,0]]
+};
+var res = await fetch('/api', {
+	method: 'POST',
+	headers: {
+		'Content-Type': 'application/json',
+	},
+	body: JSON.stringify(body),
+});
+var data = await res.json();
+console.log(data);
+			</pre>
+		</code>
+
+
+		<h4>Test online: </h4>
+		<textarea id="textarea">[[-1,-1],
+ [0,-12],
+ [1,-1],
+ [12,0],
+ [1,1],
+ [0,12],
+ [-1,1],
+ [-12,0]]</textarea>
+		<div>
+			<button onclick="callAPI()">Submit</button>
+		</div>
+
+		<div id="output">
+			<h4>Output:</h4>
+			<textarea id="output-json" readonly></textarea>
+		</div>
+	</div>
+</body>
+</html>
