@@ -39,7 +39,6 @@ def api_index():
 
 	arg = []
 	try:
-		# points = json.loads(points)
 		for p in points:
 			arg.append(str(p[0])) # x
 			arg.append(str(p[1])) # y
